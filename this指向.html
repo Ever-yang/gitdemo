@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        Function.prototype.before = function (beforefun) {
+            var _orgin = this;    // 保存原函数引用
+            return function () { // 返回包含了原函数和新函数的"代理函数"
+                console.log(this,"**this1")
+                beforefun.apply(this, arguments); // 执行新函数，修正this
+                // 原来函数的this，要维持不变
+                // 假设原来的函数是a.b.c(),原来c的this指向b，那么如何位置改造后的c方法中的this同事依旧指向b呢。由于是aop变成，所以扩展后的方法写法
+                // a.b.c = a.b.c.before(()=>{
+                    
+                // })
+                // 只是将原来的函数进行改造然后覆盖，所以调用原函数时，可能原函数中有对this的访问，所以调用原函数时，必须指正原函数中的this    
+                return _orgin.apply(this, arguments); // 执行原函数
+            }
+        };
+
+        // var originFun = function (val) {
+        //     console.log('原型函数: ' + val);
+        // }
+
+        // originFun = originFun.before(function () {
+        //     // 传入函数调用前处理方法
+        //     console.log('before: ' + new Date().getTime())
+        // })
+
+        // newFun("测试前置通知");
+        newfun = document.getElementById.before(function(){
+            console.log(1)
+        })
+
+    </script>
+</body>
+
+</html>
